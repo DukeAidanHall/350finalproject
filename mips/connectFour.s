@@ -5,7 +5,9 @@ j init
 
 ### =============== MAIN LOOP =================
 CPUloop:
+lw $r27, 400($r0)
 bne $r27, $r0, update     #r27 is drop flag [INPUT]
+lw $r29, 401($r0)
 bne $r29, $r0, reset      #r29 is reset flag [INPUT]
 j CPUloop
 
@@ -79,6 +81,7 @@ addi $r8, $r0, 3
 editBoard:
 
 ##EDIT BOARD
+lw $r28, 402($r0)
 add $r1, $r0, $r28         # $r28 is column flag [INPUT]
 
 lw $r2, 200($r1)          # get height

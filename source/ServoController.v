@@ -1,19 +1,15 @@
 module ServoController(
-    input        clk,             // System Clock Input 100 Mhz
-    input[9:0]   switches,        // Position control switches
-    output       servoSignal,    // Signal to the servo
-    output       servoSignal2,
-    output[8:0] LED,
-    input BTNC,
-    input BTNR,
-    input BTNL
+    input clk,             // System Clock Input 100 Mhz
+    input BTNC_In,
+    input BTNR_In,
+    input BTNL_In
+
+    output[8:0] LED_Out,
+    output servoSignal_Out,    // Signal to the servo
+    output servoSignal2_Out,
     );      
    
     reg[9:0] duty_cycle;
-   
-    ////////////////////
-      // Your Code Here //
-      ////////////////////
 
     reg[31:0] spincounter = 0;
     reg MediumCounter = 0;
@@ -21,11 +17,11 @@ module ServoController(
       reg updateLeft = 0;
       reg updateRight = 0;
       reg[6:0] button_state = 0;
-      assign LED[6:0] = button_state;
+      assign LED_Out[6:0] = button_state;
       reg oldUpdateLeft = 0;
       reg oldUpdateRight = 0;
-      assign LED[8] = updateLeft;
-      assign LED[7] = updateRight;
+      assign LED_Out[8] = updateLeft;
+      assign LED_Out[7] = updateRight;
       reg prevUpdateLeft = 0;
       reg prevUpdateRight = 0;
       reg[6:0] newState = 0;
@@ -40,16 +36,16 @@ module ServoController(
             end
       end
    
-    always @(posedge MediumCounter) begin //If left button was just pressed, send update BTNL
-        oldUpdateRight <= BTNR;
-        oldUpdateLeft <= BTNL;
-        if(oldUpdateLeft && !(BTNL) && (!updateDrop2)) begin
+    always @(posedge MediumCounter) begin //If left button was just pressed, send update BTNL_In
+        oldUpdateRight <= BTNR_In;
+        oldUpdateLeft <= BTNL_In;
+        if(oldUpdateLeft && !(BTNL_In) && (!updateDrop2)) begin
             updateLeft <= 1;
         end
         else begin
             updateLeft <= 0;
         end
-        if(oldUpdateRight && !(BTNR)&& (!updateDrop2)) begin
+        if(oldUpdateRight && !(BTNR_In)&& (!updateDrop2)) begin
             updateRight <= 1;
         end
         else begin
@@ -91,14 +87,9 @@ module ServoController(
         end
     end
 
-    PWMSerializer #(.PERIOD_WIDTH_NS(32'd20000000)) ServoSerializer(.clk(clk), .reset(1'b0), .duty_cycle(duty_cycle), .signal(servoSignal)); //Servo control
+    PWMSerializer #(.PERIOD_WIDTH_NS(32'd20000000)) ServoSerializer(.clk(clk), .reset(1'b0), .duty_cycle(duty_cycle), .signal(servoSignal_Out)); //Servo control
 
-       
     reg[9:0] duty_cycle2;
-   
-    ////////////////////
-      // Your Code Here //
-      ////////////////////
 
     reg[31:0] spincounter2 = 13;
     reg MediumCounter2 = 0;
@@ -117,9 +108,9 @@ module ServoController(
             end
       end
    
-    always @(posedge MediumCounter2) begin //If left button was just pressed, send update BTNL
-        oldUpdateDrop2 <= BTNC && !BTNL && !BTNR;
-        if(oldUpdateDrop2 && !(BTNC) && (button_state == newState)) begin
+    always @(posedge MediumCounter2) begin //If left button was just pressed, send update BTNL_In
+        oldUpdateDrop2 <= BTNC_In && !BTNL_In && !BTNR_In;
+        if(oldUpdateDrop2 && !(BTNC_In) && (button_state == newState)) begin
             updateDrop2 <= 1;
         end
         else begin
@@ -153,9 +144,7 @@ module ServoController(
         end
     end
    
-   
-
-    PWMSerializer #(.PERIOD_WIDTH_NS(32'd20000000)) ServoSerializer2(.clk(clk), .reset(1'b0), .duty_cycle(duty_cycle2), .signal(servoSignal2)); //Servo control
+    PWMSerializer #(.PERIOD_WIDTH_NS(32'd20000000)) ServoSerializer2(.clk(clk), .reset(1'b0), .duty_cycle(duty_cycle2), .signal(servoSignal2_Out)); //Servo control
 
    
 endmodule
