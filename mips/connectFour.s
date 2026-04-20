@@ -248,18 +248,23 @@ j CPUloop
 
 WIN:
 # show X won
-addi $r1, $r0, 1         # memory[300] = 1
 sw $r1, 300($r0)
+addi $r3, $r0, 3
+bne $r2, $r3, winPlayer2
+sw $r1, 501($r0)         # memory[501] = 1
+j end
+winPlayer2:
+sw $r1, 502($r0)         # memory[502] = 1
 j end
 
 error:
 # it failed
 addi $r1, $r0, 1
-sw $r1, 301($r0)         # memory[301] = 1
+sw $r1, 300($r0)         # memory[300] = 1
 j end
 
 reset:
 # reset the board
-j end
+j CPUstart
 
 end:

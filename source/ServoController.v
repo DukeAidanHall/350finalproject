@@ -7,6 +7,7 @@ module ServoController(
     output[8:0] LED_Out,
     output servoSignal_Out,    // Signal to the servo
     output servoSignal2_Out,
+    output [6:0] currentColumn
     );      
    
     reg[9:0] duty_cycle;
@@ -26,6 +27,10 @@ module ServoController(
       reg prevUpdateRight = 0;
       reg[6:0] newState = 0;
       reg[31:0] counter3 = 0;
+
+      //maintain currentColumn
+      assign currentColumn[6:0] = button_state[6:0];
+      assign currentColumn[31:7] = 25'b0;
      
       always @(posedge clk) begin //Builds the medium speed clock
             if(counter < 32'd50000000) begin
