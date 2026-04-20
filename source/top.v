@@ -81,7 +81,7 @@ module top (
         end
     end
     
-    wire column_adjusted;
+    wire [31:0] column_adjusted;
     assign column_adjusted = column+3;
     
     wire [8:0] LED80;
