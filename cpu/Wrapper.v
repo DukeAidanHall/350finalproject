@@ -44,7 +44,7 @@ Column_In, Err_out, Win1_out, Win2_out);
 
 	//Logic for memory mapped I
 	wire useBTNC, useBTND, useColumn;
-	wire memDataOut1, memDataOut2, memDataOut3;
+	wire [31:0] memDataOut1, memDataOut2, memDataOut3;
 	assign useBTNC = (memAddr[11:0] == 12'd400);
 	assign useBTND = (memAddr[11:0] == 12'd401);
 	assign useColumn = (memAddr[11:0] == 12'd402);
@@ -54,20 +54,28 @@ Column_In, Err_out, Win1_out, Win2_out);
 	assign memDataOut3 = (useColumn) ? Column_In : memDataOut2;
 
 	//Logic for memory mapped O
-	wire useErr, useWin1, useWin2
-	assign useErr = (memAddr[11:0] == 12'd300);
-	assign useWin1 = (memAddr[11:0] == 12'd501);
-	assign useWin2 = (memAddr[11:0] == 12'd502);
+	wire useErr, useWin1, useWin2;
+	assign useErr = mwe && (memAddr[11:0] == 12'd300);
+	assign useWin1 = mwe && (memAddr[11:0] == 12'd501);
+	assign useWin2 = mwe && (memAddr[11:0] == 12'd502);
+	
+	wire ram_mwe;
+	assign ram_mwe = mwe && (!useErr & !useWin1 & !useWin2);
 
 	always @(posedge clock) begin
 		if (useErr) begin
-			Err_out <= 1'b1
+			Err_out <= memDataIn[0];
 		end
 		else if (useWin1) begin
-			Win1_out <= 1'b1
+			Win1_out <= memDataIn[0];
 		end
 		else if (useWin2) begin
-			Win2_out <= 1'b1
+			Win2_out <= memDataIn[0];
+		end
+		else if (reset) begin
+		    Err_out <= 1'b0;
+		    Win1_out <= 1'b0;
+		    Win2_out <= 1'b0;
 		end
 	end
 	
@@ -101,7 +109,7 @@ Column_In, Err_out, Win1_out, Win2_out);
 						
 	// Processor Memory (RAM)
 	RAM ProcMem(.clk(clock), 
-		.wEn(mwe), 
+		.wEn(ram_mwe), 
 		.addr(memAddr[11:0]), 
 		.dataIn(memDataIn), 
 		.dataOut(memDataOut));
