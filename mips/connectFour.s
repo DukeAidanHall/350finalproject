@@ -1,5 +1,10 @@
 ### =============== START =================
 CPUstart:
+nop
+nop
+nop
+nop
+nop
 j init
 
 
@@ -7,8 +12,14 @@ j init
 CPUloop:
 lw $r27, 400($r0)
 bne $r27, $r0, update     #r27 is drop flag [INPUT]
+nop
+nop
+nop
 lw $r29, 401($r0)
 bne $r29, $r0, reset      #r29 is reset flag [INPUT]
+nop
+nop
+nop
 j CPUloop
 
 
@@ -20,11 +31,14 @@ addi $r1, $r0, 0          # pointer
 addi $r2, $r0, 156        # counter
 addi $r3, $r0, 0          # value
 
-0loop:                   # all 0 board loop
+loop0:                   # all 0 board loop
     sw $r3, 0($r1)
     addi $r1, $r1, 1
     addi $r2, $r2, -1
-    bne $r2, $r0, 0loop
+    bne $r2, $r0, loop0
+    nop
+    nop
+    nop
 
 
 ##ALL THE ONES
@@ -39,8 +53,14 @@ loopA1:                 # all 1 board loop
         addi $r1, $r1, 1
         addi $r2, $r2, -1
         bne $r2, $r0, loopB1
-    addi $r1, $r1, 7
+        nop
+        nop
+        nop
+    addi $r1, $r1, 6
     bne $r4, $r0, loopA1
+    nop
+    nop
+    nop
 
 
 ##COUNTERS
@@ -65,15 +85,30 @@ addi $r8, $r0, 3          # $r8 is player flag
 
 j CPUloop
 
+nop
+nop
+nop
+
 
 update:
 ### ================ UPDATE ================
 
 addi $r3, $r0, 3
+nop
+nop
+nop
 bne $r8, $r3, player2
+
+nop
+nop
+nop
 
 addi $r8, $r0, 2
 j editBoard
+
+nop
+nop
+nop
 
 player2:
 addi $r8, $r0, 3
@@ -95,6 +130,10 @@ add $r5, $r4, $r2          # landingSpot = column * 12 + height
 lw $r6, 0($r5)            # get memory[landingSpot]
 addi $r7, $r0, 1          # $r7 = 1
 bne $r6, $r7, error       # if memory[landingSpot] != 1, ERROR
+
+nop
+nop
+nop
 
 sw $r8, 0($r5)            # memory[landingSpot] = X
 addi $r2, $r2, 1          # height + 1
@@ -136,6 +175,9 @@ lw $r26, -33($r1)         # $r26 = memory[landingSpot - 33]
 bne $r2, $r3, endcase1
 bne $r2, $r4, endcase1
 bne $r2, $r5, endcase1
+nop
+nop
+nop
 j WIN
 endcase1:
 
@@ -143,6 +185,9 @@ endcase1:
 bne $r2, $r6, endcase2
 bne $r2, $r7, endcase2
 bne $r2, $r8, endcase2
+nop
+nop
+nop
 j WIN
 endcase2:
 
@@ -150,6 +195,9 @@ endcase2:
 bne $r2, $r9, endcase3
 bne $r2, $r10, endcase3
 bne $r2, $r11, endcase3
+nop
+nop
+nop
 j WIN
 endcase3:
 
@@ -157,6 +205,9 @@ endcase3:
 bne $r2, $r12, endcase4
 bne $r2, $r13, endcase4
 bne $r2, $r14, endcase4
+nop
+nop
+nop
 j WIN
 endcase4:
 
@@ -164,6 +215,9 @@ endcase4:
 bne $r2, $r15, endcase5
 bne $r2, $r16, endcase5
 bne $r2, $r17, endcase5
+nop
+nop
+nop
 j WIN
 endcase5:
 
@@ -171,6 +225,9 @@ endcase5:
 bne $r2, $r18, endcase6
 bne $r2, $r19, endcase6
 bne $r2, $r20, endcase6
+nop
+nop
+nop
 j WIN
 endcase6:
 
@@ -178,6 +235,9 @@ endcase6:
 bne $r2, $r21, endcase7
 bne $r2, $r22, endcase7
 bne $r2, $r23, endcase7
+nop
+nop
+nop
 j WIN
 endcase7:
 
@@ -185,6 +245,9 @@ endcase7:
 bne $r2, $r24, endcase8
 bne $r2, $r25, endcase8
 bne $r2, $r26, endcase8
+nop
+nop
+nop
 j WIN
 endcase8:
 
@@ -192,6 +255,9 @@ endcase8:
 bne $r2, $r3, endcase9
 bne $r2, $r4, endcase9
 bne $r2, $r15, endcase9
+nop
+nop
+nop
 j WIN
 endcase9:
 
@@ -199,6 +265,9 @@ endcase9:
 bne $r2, $r6, endcase10
 bne $r2, $r7, endcase10
 bne $r2, $r18, endcase10
+nop
+nop
+nop
 j WIN
 endcase10:
 
@@ -206,6 +275,9 @@ endcase10:
 bne $r2, $r9, endcase11
 bne $r2, $r10, endcase11
 bne $r2, $r21, endcase11
+nop
+nop
+nop
 j WIN
 endcase11:
 
@@ -213,6 +285,9 @@ endcase11:
 bne $r2, $r12, endcase12
 bne $r2, $r13, endcase12
 bne $r2, $r24, endcase12
+nop
+nop
+nop
 j WIN
 endcase12:
 
@@ -220,6 +295,9 @@ endcase12:
 bne $r2, $r15, endcase13
 bne $r2, $r16, endcase13
 bne $r2, $r3, endcase13
+nop
+nop
+nop
 j WIN
 endcase13:
 
@@ -227,6 +305,9 @@ endcase13:
 bne $r2, $r18, endcase14
 bne $r2, $r19, endcase14
 bne $r2, $r6, endcase14
+nop
+nop
+nop
 j WIN
 endcase14:
 
@@ -234,6 +315,9 @@ endcase14:
 bne $r2, $r21, endcase15
 bne $r2, $r22, endcase15
 bne $r2, $r9, endcase15
+nop
+nop
+nop
 j WIN
 endcase15:
 
@@ -241,30 +325,67 @@ endcase15:
 bne $r2, $r24, endcase16
 bne $r2, $r25, endcase16
 bne $r2, $r12, endcase16
+nop
+nop
+nop
 j WIN
 endcase16:
+
+# Put current player back into $r8
+add $r8, $r2, $r0
+
+#Delay to ensure multiple chips arent dropped together
+delay:
+lw $r27, 400($r0)
+bne $r27, $r0, delay
+
+nop
+nop
+nop
 
 j CPUloop
 
 WIN:
 # show X won
-sw $r1, 300($r0)
+addi $r1, $r0, 1
 addi $r3, $r0, 3
+nop
+nop
+nop
 bne $r2, $r3, winPlayer2
+nop
+nop
+nop
 sw $r1, 501($r0)         # memory[501] = 1
 j end
+nop
+nop
+nop
 winPlayer2:
 sw $r1, 502($r0)         # memory[502] = 1
 j end
+nop
+nop
+nop
 
 error:
 # it failed
 addi $r1, $r0, 1
 sw $r1, 300($r0)         # memory[300] = 1
 j end
+nop
+nop
+nop
 
 reset:
 # reset the board
 j CPUstart
+nop
+nop
+nop
 
 end:
+j end
+nop
+nop
+nop
