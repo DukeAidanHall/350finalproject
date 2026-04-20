@@ -25,9 +25,10 @@ Memory Mapped Output
     dmem[501] player 1 won (LED 11)
     dmem[502] player 2 won (LED 12)
 
+Code Below
 */
 module top (
-    input clock, // system clock input
+    input clk, // system clock input
     input BTNC, // center button press
     input BTNR, // right button press
     input BTNL, // left button press
@@ -35,20 +36,21 @@ module top (
     
     output[14:0] LED, // debug LEDs
     output servoSignal, // servo 1 (left/right)
-    output servoSignal2, // servo 2 (drop)
+    output servoSignal2 // servo 2 (drop)
     );
-
-    reg MediumCounter = 0;
+    
+    reg [31:0] counter = 0;
+    reg [31:0] MediumCounter = 0;
     reg oldBTND = 0;
-    reg BTNDPress = 0;
+    reg [31:0] BTNDPress = 0;
     reg oldBTNC = 0;
-    reg BTNCPress = 0;
+    reg [31:0] BTNCPress = 0;
 
     wire [31:0] column;
 
-    reg Err;
-    reg Win1;
-    reg Win2;
+    wire Err;
+    wire Win1;
+    wire Win2;
     assign LED[14] = Err;
     assign LED[11] = Win1;
     assign LED[12] = Win2;
@@ -78,13 +80,19 @@ module top (
             BTNCPress <= 32'b0;
         end
     end
+    
+    wire column_adjusted;
+    assign column_adjusted = column+3;
+    
+    wire [8:0] LED80;
+    assign LED[8:0] = LED80;
 
-    Wrapper CPUWrapper(.clock(clock), .reset(BTNDPress), .BTNC_In(BTNCPress), 
-    .BTND_In(BTNDPress), .Column_In(column), .Err_out(Err), 
-    Win1_out(Win1), Win2_out(Win2));
+    Wrapper CPUWrapper(.clock(clk), .reset(BTNDPress[0]), .BTNC_In(BTNCPress), 
+    .BTND_In(BTNDPress), .Column_In(column_adjusted), .Err_out(Err), 
+    .Win1_out(Win1), .Win2_out(Win2));
 
-    ServoController Servo(.clk(clock), .BTNC_In(BTNC), .BTNR_In(BTNR), 
-    .BTNL_In(BTNL), .LED_Out(LED), .servoSignal_Out(servoSignal),
+    ServoController Servo(.clk(clk), .BTNC_In(BTNC), .BTNR_In(BTNR), 
+    .BTNL_In(BTNL), .LED_Out(LED80), .servoSignal_Out(servoSignal),
     .servoSignal2_Out(servoSignal2), .currentColumn(column));
 
 endmodule
