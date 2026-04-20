@@ -1,6 +1,6 @@
 module ServoController(
     input clk,             // System Clock Input 100 Mhz
-    input BTNC_In,
+    input BTNC_In,         // Buttons
     input BTNR_In,
     input BTNL_In,
 
