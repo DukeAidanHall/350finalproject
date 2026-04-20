@@ -2,12 +2,12 @@ module ServoController(
     input clk,             // System Clock Input 100 Mhz
     input BTNC_In,
     input BTNR_In,
-    input BTNL_In
+    input BTNL_In,
 
     output[8:0] LED_Out,
     output servoSignal_Out,    // Signal to the servo
     output servoSignal2_Out,
-    output [6:0] currentColumn
+    output [31:0] currentColumn
     );      
    
     reg[9:0] duty_cycle;
@@ -18,7 +18,7 @@ module ServoController(
       reg updateLeft = 0;
       reg updateRight = 0;
       reg[6:0] button_state = 0;
-      assign LED_Out[6:0] = button_state;
+      assign LED_Out[4:0] = button_state[4:0];
       reg oldUpdateLeft = 0;
       reg oldUpdateRight = 0;
       assign LED_Out[8] = updateLeft;
@@ -103,6 +103,7 @@ module ServoController(
       reg oldUpdateDrop2 = 0;
       reg prevUpdateDrop2 = 0;
       reg[31:0] counter32 = 0;
+      assign LED_Out[6] = updateDrop2;
      
       always @(posedge clk) begin //Builds the medium speed clock
             if(counter2 < 32'd50000000) begin
