@@ -56,14 +56,20 @@ Column_In, Err_out, Win1_out, Win2_out);
 	//Logic for memory mapped O
 	wire useErr, useWin1, useWin2;
 	assign useErr = mwe && (memAddr[11:0] == 12'd300);
-	assign useWin1 = mwe && (memAddr[11:0] == 12'd501);
-	assign useWin2 = mwe && (memAddr[11:0] == 12'd502);
+	assign useWin1 = mwe && (memAddr[11:0] == 12'd502);
+	assign useWin2 = mwe && (memAddr[11:0] == 12'd501);
+	
 	
 	wire ram_mwe;
 	assign ram_mwe = mwe && (!useErr & !useWin1 & !useWin2);
 
 	always @(posedge clock) begin
-		if (useErr) begin
+	    if (reset) begin
+		    Err_out <= 1'b0;
+		    Win1_out <= 1'b0;
+		    Win2_out <= 1'b0;
+		end
+		else if (useErr) begin
 			Err_out <= memDataIn[0];
 		end
 		else if (useWin1) begin
@@ -71,11 +77,6 @@ Column_In, Err_out, Win1_out, Win2_out);
 		end
 		else if (useWin2) begin
 			Win2_out <= memDataIn[0];
-		end
-		else if (reset) begin
-		    Err_out <= 1'b0;
-		    Win1_out <= 1'b0;
-		    Win2_out <= 1'b0;
 		end
 	end
 	
