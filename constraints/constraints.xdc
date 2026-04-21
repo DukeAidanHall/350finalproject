@@ -21,6 +21,7 @@ set_property -dict { PACKAGE_PIN U8    IOSTANDARD LVCMOS18 } [get_ports { switch
 # Servo signal
 set_property -dict { PACKAGE_PIN D14   IOSTANDARD LVCMOS33 } [get_ports { servoSignal }];  # Pin JB[1]
 set_property -dict { PACKAGE_PIN C17   IOSTANDARD LVCMOS33 } [get_ports { servoSignal2 }];  # Pin JA[1]
+set_property -dict { PACKAGE_PIN H4   IOSTANDARD LVCMOS33 } [get_ports { player1win }];  # Pin JA[1]
 
 
 # Button - uncomment for FSM task
