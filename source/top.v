@@ -36,7 +36,8 @@ module top (
     
     output[14:0] LED, // debug LEDs
     output servoSignal, // servo 1 (left/right)
-    output servoSignal2 // servo 2 (drop)
+    output servoSignal2, // servo 2 (drop)
+    output player1win
     );
     
     reg [31:0] counter = 0;
@@ -53,6 +54,7 @@ module top (
     wire Win2;
     assign LED[14] = Err;
     assign LED[11] = Win1;
+    assign player1win = Win1;
     assign LED[12] = Win2;
 
     always @(posedge clk) begin //Builds the medium speed clock
