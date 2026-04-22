@@ -70,7 +70,7 @@ module ServoController(
             spincounter <= 0;
         end
         else begin
-        if(counter3 < 32'd50000000) begin
+        if(counter3 < 32'd500000) begin
                   counter3 <= counter3+1;
             end else begin
                 counter3 <= 0;
@@ -80,11 +80,11 @@ module ServoController(
     end
    
       always @(posedge clk) begin //Assign Duty Cycle
-        if (spincounter > 8) begin
+        if (spincounter > 700) begin
             button_state <= newState;
-        end else if ((spincounter < 5) && (spincounter > 2) && (button_state > newState)) begin //7
+        end else if ((spincounter < 604) && (spincounter > 200) && (button_state > newState)) begin //7
             duty_cycle = 10'd102;
-        end else if ((spincounter < 5) && (spincounter > 2) && (button_state < newState)) begin //7
+        end else if ((spincounter < 611) && (spincounter > 200) && (button_state < newState)) begin //7
             duty_cycle = 10'd1;
         end
         else begin
@@ -96,7 +96,7 @@ module ServoController(
 
     reg[9:0] duty_cycle2;
 
-    reg[31:0] spincounter2 = 13;
+    reg[31:0] spincounter2 = 9000;
     reg MediumCounter2 = 0;
       reg[31:0] counter2 = 0;
       reg updateDrop2 = 0;
@@ -131,7 +131,7 @@ module ServoController(
             spincounter2 <= 0;
         end
         else begin
-        if(counter32 < 32'd50000000) begin
+        if(counter32 < 32'd500000) begin
                   counter32 <= counter32+1;
             end else begin
                 counter32 <= 0;
@@ -141,10 +141,10 @@ module ServoController(
     end
    
       always @(posedge clk) begin //Assign Duty Cycle
-       if ((spincounter2 < 7) && (spincounter2 > 2)) begin
-            duty_cycle2 = 10'd1;
-        end else if (spincounter2 >6 && spincounter2 < 12) begin
+       if ((spincounter2 < 400) && (spincounter2 > 200)) begin
             duty_cycle2 = 10'd102;
+        end else if ((spincounter2 >500) && (spincounter2 < 700)) begin
+            duty_cycle2 = 10'd1;
         end
         else begin
             duty_cycle2 = 10'd0;
