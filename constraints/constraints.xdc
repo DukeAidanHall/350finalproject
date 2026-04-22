@@ -19,10 +19,14 @@ set_property -dict { PACKAGE_PIN T8    IOSTANDARD LVCMOS18 } [get_ports { switch
 set_property -dict { PACKAGE_PIN U8    IOSTANDARD LVCMOS18 } [get_ports { switches[9] }];
 
 # Servo signal
-set_property -dict { PACKAGE_PIN D14   IOSTANDARD LVCMOS33 } [get_ports { servoSignal }];  # Pin JB[1]
+set_property -dict { PACKAGE_PIN D17   IOSTANDARD LVCMOS33 } [get_ports { servoSignal }];  # Pin JA[7]
 set_property -dict { PACKAGE_PIN C17   IOSTANDARD LVCMOS33 } [get_ports { servoSignal2 }];  # Pin JA[1]
-set_property -dict { PACKAGE_PIN H4   IOSTANDARD LVCMOS33 } [get_ports { player1win }];  # Pin JA[1]
-
+set_property -dict { PACKAGE_PIN H1   IOSTANDARD LVCMOS33 } [get_ports { leftButtonExt }];  # Pin JD[2]
+set_property -dict { PACKAGE_PIN K1   IOSTANDARD LVCMOS33 } [get_ports { rightButtonExt }];  # Pin JC[1]
+set_property -dict { PACKAGE_PIN E7   IOSTANDARD LVCMOS33 } [get_ports { dropButtonExt }];  # Pin JC[7]
+set_property -dict { PACKAGE_PIN D14   IOSTANDARD LVCMOS33 } [get_ports { player1win }];  # Pin JB[1]
+set_property -dict { PACKAGE_PIN E16   IOSTANDARD LVCMOS33 } [get_ports { player2win }];  # Pin JB[7]
+set_property -dict { PACKAGE_PIN A13   IOSTANDARD LVCMOS33 } [get_ports { resetButtonExt }];  # Pin JXDAC[1]
 
 # Button - uncomment for FSM task
  #set_property -dict { PACKAGE_PIN M18   IOSTANDARD LVCMOS33 } [get_ports { BTNU }]; #IO_L4N_T0_D05_14 Sch=btnu
