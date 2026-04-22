@@ -56,8 +56,8 @@ Column_In, Err_out, Win1_out, Win2_out);
 	//Logic for memory mapped O
 	wire useErr, useWin1, useWin2;
 	assign useErr = mwe && (memAddr[11:0] == 12'd300);
-	assign useWin1 = mwe && (memAddr[11:0] == 12'd502);
-	assign useWin2 = mwe && (memAddr[11:0] == 12'd501);
+	assign useWin1 = mwe && (memAddr[11:0] == 12'd501);
+	assign useWin2 = mwe && (memAddr[11:0] == 12'd502); //flip if necessary
 	
 	
 	wire ram_mwe;
