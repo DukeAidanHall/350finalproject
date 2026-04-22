@@ -33,11 +33,16 @@ module top (
     input BTNR, // right button press
     input BTNL, // left button press
     input BTND, // down button press
+    input leftButtonExt, //exterior left press 
+    input rightButtonExt, //exterior right press 
+    input dropButtonExt, //exterior drop press 
+    input resetButtonExt, //exterior reset press
     
     output[14:0] LED, // debug LEDs
     output servoSignal, // servo 1 (left/right)
     output servoSignal2, // servo 2 (drop)
-    output player1win
+    output player1win,
+    output player2win
     );
     
     reg [31:0] counter = 0;
@@ -56,6 +61,8 @@ module top (
     assign LED[11] = Win1;
     assign player1win = Win1;
     assign LED[12] = Win2;
+    assign player2win = Win2;
+    assign LED[13] = BTNDPress;
 
     always @(posedge clk) begin //Builds the medium speed clock
         if(counter < 32'd50000000) begin
@@ -67,15 +74,15 @@ module top (
       end
 
     always @(posedge MediumCounter) begin
-        oldBTND <= BTND;
-        if(BTND && !(oldBTND)) begin //BTND press
+        oldBTND <= resetButtonExt;
+        if(resetButtonExt && !(oldBTND)) begin //BTND press
             BTNDPress <= 32'b1;
         end
         else begin
             BTNDPress <= 32'b0;
         end
-        oldBTNC <= BTNC;
-        if(BTNC && !(oldBTNC)) begin //BTNC press
+        oldBTNC <= (dropButtonExt);
+        if(dropButtonExt && !(oldBTNC)) begin //BTNC press
             BTNCPress <= 32'b1;
         end
         else begin
@@ -93,8 +100,8 @@ module top (
     .BTND_In(BTNDPress), .Column_In(column_adjusted), .Err_out(Err), 
     .Win1_out(Win1), .Win2_out(Win2));
 
-    ServoController Servo(.clk(clk), .BTNC_In(BTNC), .BTNR_In(BTNR), 
-    .BTNL_In(BTNL), .LED_Out(LED80), .servoSignal_Out(servoSignal),
+    ServoController Servo(.clk(clk), .BTNC_In(dropButtonExt), .BTNR_In(rightButtonExt), 
+    .BTNL_In(leftButtonExt), .LED_Out(LED80), .servoSignal_Out(servoSignal),
     .servoSignal2_Out(servoSignal2), .currentColumn(column));
 
 endmodule
