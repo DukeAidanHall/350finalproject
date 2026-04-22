@@ -21,8 +21,8 @@ module ServoController(
       assign LED_Out[4:0] = button_state[4:0];
       reg oldUpdateLeft = 0;
       reg oldUpdateRight = 0;
-      assign LED_Out[8] = updateLeft;
-      assign LED_Out[7] = updateRight;
+      assign LED_Out[8] = BTNL_In; //updateLeft;
+      assign LED_Out[7] = BTNR_In; //updateRight;
       reg prevUpdateLeft = 0;
       reg prevUpdateRight = 0;
       reg[6:0] newState = 0;
@@ -104,6 +104,7 @@ module ServoController(
       reg prevUpdateDrop2 = 0;
       reg[31:0] counter32 = 0;
       assign LED_Out[6] = updateDrop2;
+      assign LED_Out[5] = BTNC_In;
      
       always @(posedge clk) begin //Builds the medium speed clock
             if(counter2 < 32'd50000000) begin
